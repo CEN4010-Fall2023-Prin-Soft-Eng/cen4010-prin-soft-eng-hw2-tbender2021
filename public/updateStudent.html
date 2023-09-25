@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Update Student</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="#">Student Management System</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="addStudent.html">Add a Student</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="updateStudent.html">Update a Student</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="deleteStudent.html">Delete a Student</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="displayStudent.html">Display a Student</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="listStudents.html">List All Students</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="searchStudent.html">Search for a Student by Last Name</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <h1>Update Student</h1>
+    <form id="updateStudentForm">
+        <label for="recordId">Record ID:</label>
+        <input type="text" id="recordId" name="record_id" required><br><br>
+        
+        <label for="firstName">First Name:</label>
+        <input type="text" id="firstName" name="first_name" required><br><br>
+        
+        <label for="lastName">Last Name:</label>
+        <input type="text" id="lastName" name="last_name" required><br><br>
+        
+        <label for="gpa">GPA:</label>
+        <input type="number" id="gpa" name="gpa" step="0.01" required><br><br>
+        
+        <label for="enrolled">Enrolled:</label>
+        <input type="checkbox" id="enrolled" name="enrolled"><br><br>
+
+        <input type="submit" value="Update Student">
+    </form>
+
+    <script>
+        document.getElementById('updateStudentForm').addEventListener('submit', function (event) {
+            event.preventDefault(); 
+            
+            
+            var recordId = document.getElementById('recordId').value;
+            var firstName = document.getElementById('firstName').value;
+            var lastName = document.getElementById('lastName').value;
+            var gpa = parseFloat(document.getElementById('gpa').value);
+            var enrolled = document.getElementById('enrolled').checked;
+            
+            
+            var data = {
+                "record_id": recordId,
+                "first_name": firstName,
+                "last_name": lastName,
+                "gpa": gpa,
+                "enrolled": enrolled
+            };
+            
+           
+            fetch(`/students/${recordId}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+                
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                
+            });
+        });
+    </script>
+</body>
+</html>

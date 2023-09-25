@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Delete Student</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="#">Student Management System</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="addStudent.html">Add a Student</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="updateStudent.html">Update a Student</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="deleteStudent.html">Delete a Student</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="displayStudent.html">Display a Student</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="listStudents.html">List All Students</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="searchStudent.html">Search for a Student by Last Name</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <h1>Delete Student</h1>
+    <p>Enter the Student's Record ID to delete:</p>
+    <form id="deleteStudentForm">
+        <label for="recordId">Record ID:</label>
+        <input type="text" id="recordId" name="record_id" required><br><br>
+        <input type="submit" value="Delete Student">
+    </form>
+
+    <script>
+        document.getElementById('deleteStudentForm').addEventListener('submit', function (event) {
+            event.preventDefault(); 
+            
+           
+            var recordId = document.getElementById('recordId').value;
+            
+            
+            fetch(`/students/${recordId}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+               
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                
+            });
+        });
+    </script>
+</body>
+</html>

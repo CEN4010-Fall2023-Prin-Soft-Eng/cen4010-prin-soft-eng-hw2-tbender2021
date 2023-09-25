@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Search Student</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="#">Student Management System</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="addStudent.html">Add a Student</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="updateStudent.html">Update a Student</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="deleteStudent.html">Delete a Student</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="displayStudent.html">Display a Student</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="listStudents.html">List All Students</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="searchStudent.html">Search for a Student by Last Name</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <h1>Search Student by Last Name</h1>
+    <p>Enter the last name of the student to search:</p>
+    <input type="text" id="lastName" name="last_name" required><br><br>
+    <button onclick="searchStudentByLastName()">Search</button>
+    <br><br>
+    <div id="searchResults"></div>
+
+    <script>
+        function searchStudentByLastName() {
+            var lastName = $("#lastName").val();
+            $.ajax({
+                url: `/students?last_name=${lastName}`,
+                type: 'get',
+                success: function (response) {
+                    // Display the search results in a div
+                    $("#searchResults").html(`<pre>${JSON.stringify(response, null, 2)}</pre>`);
+                },
+                error: function (xhr) {
+                    $("#searchResults").html(`Error: ${xhr.status} - ${xhr.statusText}`);
+                }
+            });
+        }
+    </script>
+</body>
+</html>

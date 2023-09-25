@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>List Students</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="#">Student Management System</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="addStudent.html">Add a Student</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="updateStudent.html">Update a Student</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="deleteStudent.html">Delete a Student</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="displayStudent.html">Display a Student</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="listStudents.html">List All Students</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="searchStudent.html">Search for a Student by Last Name</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <h1>List Students</h1>
+    <button onclick="sendGetAllStudents()">Get All Students</button>
+    <br><br>
+    <div id="studentList"></div>
+
+    <script>
+        function sendGetAllStudents() {
+            $.ajax({
+                url: '/students',
+                type: 'get',
+                success: function (response) {
+                    // Display the list of students in a div
+                    $("#studentList").html(`<pre>${JSON.stringify(response, null, 2)}</pre>`);
+                },
+                error: function (xhr) {
+                    $("#studentList").html(`Error: ${xhr.status} - ${xhr.statusText}`);
+                }
+            });
+        }
+    </script>
+</body>
+</html>
