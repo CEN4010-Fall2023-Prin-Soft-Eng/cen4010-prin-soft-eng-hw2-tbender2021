@@ -63,6 +63,8 @@ app.use(express.static('./public'));
  *         description: Unable to create resource.
  *       201:
  *         description: Success. The student object has been created.
+ *       409:
+ *         description: Error. A duplicate name already exists.
  */
 app.post('/students', function (req, res) {//creates a new student obj with all of it's attributes.
 
@@ -106,7 +108,10 @@ app.post('/students', function (req, res) {//creates a new student obj with all 
         }
       }) //end writeFile method
     } else {
-      console.log("Student exists")
+      var rsp_obj = {};
+      rsp_obj.record_id = -1;
+      rsp_obj.message = 'error - duplicate record';
+      return res.status(409).send(rsp_obj);
     }
   })
 
@@ -129,7 +134,11 @@ app.post('/students', function (req, res) {//creates a new student obj with all 
  *       200:
  *         description: Success. The student object has been retrieved.
  *       404:
- *         description: Error. The requested resource was not found.
+ *         description: Error. The student does not exist.
+ *       500: 
+ *         description: Error. Server issue has occured.
+ *      
+ *      
  */
 app.get('/students/:record_id', function (req, res) {
   var record_id = req.params.record_id;

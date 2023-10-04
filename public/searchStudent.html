@@ -60,5 +60,31 @@
             });
         }
     </script>
+    <script>
+        // Test for successful student deletion
+it('DELETE /students/{recordid} - Success (delete student)', (done) => {
+  chai
+    .request(server)
+    .delete('/students/your_record_id') // Replace 'your_record_id' with an existing student's record ID
+    .end((err, res) => {
+      expect(res).to.have.status(200); // Expect a success status code (200)
+      expect(res.body.message).to.equal('record deleted');
+      done();
+    });
+});
+
+// Test for student not found (failure)
+it('DELETE /students/{recordid} - Failure (student not found)', (done) => {
+  chai
+    .request(server)
+    .delete('/students/non_existing_record_id') // Use a non-existing record ID
+    .end((err, res) => {
+      expect(res).to.have.status(404); // Expect a not found status code (404)
+      expect(res.body.message).to.equal('error - resource not found');
+      done();
+    });
+});
+
+    </script>
 </body>
 </html>
