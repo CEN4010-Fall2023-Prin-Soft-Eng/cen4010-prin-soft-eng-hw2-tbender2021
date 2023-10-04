@@ -244,6 +244,9 @@ app.get('/students', function (req, res) {
  *         description: Success. The student has been updated.
  *       404:
  *         description: Error. The requested resource was not found.
+ *       422:
+ *         description: Error. Unable to update student due to validation error
+ * 
  */
 app.put('/students/:record_id', function (req, res) {
   var record_id = req.params.record_id;
@@ -262,24 +265,35 @@ app.put('/students/:record_id', function (req, res) {
   //check if file exists
   fs.stat(fname, function (err) {
     if (err == null) {
-
-      //file exists
-      fs.writeFile("students/" + record_id + ".json", str, function (err) {
+      // File exists, proceed with writing
+      fs.writeFile("students/" + record_id + ".json", str, function (writeErr) {
         var rsp_obj = {};
-        if (err) {
+        if (writeErr) {
           rsp_obj.record_id = record_id;
           rsp_obj.message = 'error - unable to update resource';
-          return res.status(200).send(rsp_obj);
+          return res.status(200).send(rsp_obj); // Use 200 for unsuccessful update
         } else {
           rsp_obj.record_id = record_id;
           rsp_obj.message = 'successfully updated';
           return res.status(201).send(rsp_obj);
         }
       });
-
+    } else if (response.status === 422) {
+      // Validation error (422)
+      return response.json().then(errorData => {
+        console.error('Validation Error:', errorData);
+        var rsp_obj = {
+          record_id: record_id,
+          message: 'validation error'
+        };
+        return res.status(422).send(rsp_obj);
+      });
     } else {
-      rsp_obj.record_id = record_id; const fs = require('fs');
-      rsp_obj.message = 'error - resource not found';
+      // File does not exist, return a 404
+      var rsp_obj = {
+        record_id: record_id,
+        message: 'error - resource not found'
+      };
       return res.status(404).send(rsp_obj);
     }
 
